@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 
 export const metadata = {
-  title: "Body Rest Appointments | Book Your Slot", // Set your custom title
+  title: "Body Rest Appointments | Book Your Slot",
   description: "Book appointments seamlessly with Rajkumar's healthcare service.",
 };
 

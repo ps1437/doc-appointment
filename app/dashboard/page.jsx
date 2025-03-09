@@ -26,8 +26,8 @@ export default function Dashboard() {
   useEffect(() => {
     const filtered = appointments.filter(
       (a) =>
-        a.userName.toLowerCase().includes(search.toLowerCase()) ||
-        a.userPhone.includes(search)
+        a.userName?.toLowerCase().includes(search.toLowerCase()) ||
+        a.userPhone?.includes(search)
     );
     setFilteredAppointments(filtered);
     setPage(1);
@@ -51,12 +51,12 @@ export default function Dashboard() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {paginatedData.map((appointment) => (
-          <div key={appointment.id} className="bg-white shadow-lg rounded-xl p-5 border-2 border-gray-200 transition-transform hover:scale-105 hover:border-gray-500">
-            <h2 className="text-xl font-semibold text-gray-800">{appointment.userName}</h2>
-            <p className="text-gray-600">📞 {appointment.userPhone}</p>
-            <p className="text-gray-600">📅 {appointment.appointmentDate}</p>
-            <p className="text-gray-600">⏰ {appointment.appointmentTime}</p>
-            {appointment.issueDescription && <p className="text-gray-600"> {appointment.issueDescription}</p>}
+          <div key={appointment?.id} className="bg-white shadow-lg rounded-xl p-5 border-2 border-gray-200 transition-transform hover:scale-105 hover:border-gray-500">
+            <h2 className="text-xl font-semibold text-gray-800">{appointment?.userName}</h2>
+            <p className="text-gray-600">📞 {appointment?.mobileNumber}</p>
+            <p className="text-gray-600">📅 {appointment?.appointmentDate}</p>
+            <p className="text-gray-600">⏰ {appointment?.appointmentTime}</p>
+            {appointment?.issueDescription && <p className="text-gray-600"> {appointment?.issueDescription}</p>}
           </div>
         ))}
       </div>

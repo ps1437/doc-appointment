@@ -5,8 +5,9 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useBookedSlots } from "../context/BookedSlotsProvider";
 import { useConfig } from "../context/ConfigContext";
-import { createOrder, paymentSuccess } from "../services/appointmentService";
+import { createOrder, createPhonePayPayment, paymentSuccess } from "../services/appointmentService";
 import  Alert  from "./Alert";
+import axios from "axios";
 
 export default function AppointmentForm() {
   const router = useRouter();
@@ -18,7 +19,7 @@ export default function AppointmentForm() {
 
   const [formData, setFormData] = useState({
     userName: "",
-    userPhone: "",
+    mobileNumber: "",
     appointmentDate: "",
     appointmentTime: "",
     issueDescription: "",
@@ -91,6 +92,7 @@ export default function AppointmentForm() {
     }
   };
 
+
   if (config === null) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-teal-500 to-blue-600 text-white text-2xl font-bold">
@@ -99,6 +101,16 @@ export default function AppointmentForm() {
     );
   }
 
+  const handleClick = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await createPhonePayPayment(formData);
+      window.location.href = response.data.data.instrumentResponse.redirectInfo.url; 
+    } catch (error) {
+      console.error("Error making API request:", error);
+    }
+  };
+  
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-teal-500 to-blue-600 px-4">
       <div className="w-full max-w-lg bg-white shadow-lg rounded-lg p-6">
@@ -107,7 +119,7 @@ export default function AppointmentForm() {
           {config.form.title}
         </h2>
         {isError && <Alert message="Something went wrong"/> }
-        <form onSubmit={handlePayment} className="space-y-4">
+        <form onSubmit={handleClick} className="space-y-4">
           <div>
             <label className="block text-gray-700 font-semibold mb-1">{config.form.labels.userName}</label>
             <input
@@ -126,7 +138,7 @@ export default function AppointmentForm() {
               <span className="text-gray-600 mr-2">+91</span>
               <input
                 type="tel"
-                name="userPhone"
+                name="mobileNumber"
                 placeholder={config.form.placeholders.userPhone}
                 onChange={handleChange}
                 required
